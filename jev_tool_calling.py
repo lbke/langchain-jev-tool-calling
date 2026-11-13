@@ -55,6 +55,7 @@ def pick_tool(messages: list[MessageLikeRepresentation], tools: list[Tool]):
     #         questions={shovel.name: Noul(instructions=shovel.description)},
     #     )
     # https://openrouter.ai/docs/guides/community/jev-tutorial
+    # TODO: we could also pick values for bounded decisions by detecting boolean or enums arguments in tools
     response = requests.post(
         "https://openrouter.ai/api/alpha/decisions",
         headers={
@@ -102,7 +103,8 @@ def print_cost(cost):
         f"For 1 dollar, you could run this tool calling decision {runs_per_dollar} times (cost was {cost}$)"
     )
     print(f"Running this generation 1000 (1K) times would cost {cost * 1000}$")
-    print(f"Running this generation 1000000 (1M) times would cost {cost * 1000000}$")
+    print(
+        f"Running this generation 1000000 (1M) times would cost {cost * 1000000}$")
 
 
 def agent_loop():
@@ -153,7 +155,8 @@ def tool_calling_jev():
             include_raw=True,
         )
         tool_args = args_generator.invoke(
-            "\n".join([user_prompt, f"Generate args for tool_call {shovel.name}"]),
+            "\n".join(
+                [user_prompt, f"Generate args for tool_call {shovel.name}"]),
         )
         costs.append(get_ai_message_cost(tool_args["raw"]))
         tool_args_json = tool_args["parsed"].model_dump()
