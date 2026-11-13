@@ -16,7 +16,8 @@ def shovel(depth_meters: int):
     return f"Dug a {depth_meters} meters deep hole"
 
 
-model = ChatOpenRouter(model="google/gemini-3.1-flash-lite")
+cheap_model = ChatOpenRouter(model="google/gemini-3.1-flash-lite")
+model = ChatOpenRouter(model="google/gemini-3.5-flash")
 
 
 def pick_tool(user_prompt):
@@ -65,6 +66,9 @@ def print_cost(cost):
     runs_per_dollar = int(1/cost)
     print(
         f"For 1 dollar, you could run this tool calling decision {runs_per_dollar} times (cost was {cost}$)")
+    print(f"Running this generation 1000 (1K) times would cost {cost*1000}$")
+    print(
+        f"Running this generation 1000000 (1M) times would cost {cost*1000000}$")
 
 
 def main():
